@@ -12,6 +12,13 @@ function validateInput(email, password, username, firstName) {
     }
 }
 
+function validateList(title) {
+    if(!title) {
+        throw Error(ERR.TITLE_REQUIRED)
+    }
+}
+
 module.exports = {
-    validateInput
+    validateInput,
+    validateList
 }

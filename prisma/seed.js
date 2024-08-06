@@ -20,6 +20,14 @@ async function seed() {
         'ADMIN',
         'Nance'
     )
+
+    const film = await createFilm(
+        'Blue Velvet'
+    )
+
+    const filmTwo = await createFilm(
+        'Inception'
+    )
     process.exit(0)
 }
 
@@ -49,6 +57,16 @@ async function createUser(
 
     console.log(user)
     return user
+}
+
+async function createFilm(title) {
+    const film = await dbClient.film.create({
+        data: {
+            title
+        }
+    })
+    console.log(film)
+    return film
 }
 
 seed().catch(async (e) => {

@@ -27,7 +27,7 @@ model User {
   profile       Profile?
   reviews       Review[]
   notes         FilmNote[]
-  lists         FilmList[]
+  lists         UsersFilmList[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
 }
@@ -73,11 +73,21 @@ model FilmNote {
 
 model FilmList {
   id            Int           @id @default(autoincrement())
-  title         String
   userId        Int
   filmId        Int
-  user          User          @relation(fields: [userId], references: [id])
   film          Film          @relation(fields: [filmId], references: [id])
+  list          UsersFilmList[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+}
+
+model UsersFilmList {
+  id            Int           @id @default(autoincrement())
+  title         String
+  listId        Int
+  userId        Int
+  user          User          @relation(fields: [userId], references: [id])
+  list          FilmList      @relation(fields: [listId], references: [id])
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
 }

@@ -1,6 +1,6 @@
 const { createUser } = require('../domain/user')
 const { dataResponse } = require('../utils/responses')
-const validation = require('../utils/validateUserInput')
+const { validateInput } = require('../utils/validateUserInput')
 
 const create = async (req, res) => {
     const {
@@ -10,7 +10,7 @@ const create = async (req, res) => {
         firstName
     } = req.body
     try {
-        validation.validateInput(email, password, username, firstName)
+        validateInput(email, password, username, firstName)
     } catch(e) {
         return dataResponse(res, 400, { error: e.message})
     }
