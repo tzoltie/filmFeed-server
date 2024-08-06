@@ -20,8 +20,8 @@ const login = async (req, res) => {
         }
         const userId = foundUser.id
         const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
-
-        return dataResponse(res, 200, { token: token })
+        delete foundUser.passwordHash
+        return dataResponse(res, 200, { token: token, user: foundUser})
     } catch (e) {
         return dataResponse(res, 400, { error: e.message })
     }
