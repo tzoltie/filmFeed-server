@@ -1,51 +1,48 @@
+const { title } = require('process')
 const dbClient = require('../utils/dbClient')
 
-const create = async (title, userId) => await dbClient.usersFilmList.create({
+const create = async (title, userId) => await dbClient.filmList.create({
     data: {
         title: title,
         userId: userId
     }
 })
 
-const getListByTitle = async (title, userId) => await dbClient.usersFilmList.findFirst({
+const addFilmToList = async (filmId, listId) => await dbClient.usersFilmList.create({
+    data: {
+        filmId: filmId,
+        filmListId: listId
+    }
+})
+
+const getListById = async (userId, id) => await dbClient.filmList.findFirst({
     where: {
-        title: title,
-        userId: userId
-    }
-})
-
-const addFilm = async (userId, filmId, listId) => await dbClient.filmList.create({
-    data: {
         userId: userId,
-        listId: listId,
-        filmId: filmId
+        id: id
     }
 })
 
-const updateList = async (title, userId) => await dbClient.usersFilmList.update({
+const getUsersListById = async (id) => await dbClient.usersFilmList.findFirst({
     where: {
-        title: title,
-        userId: userId
-    },
-    data: {
-        title: title
-    }
-})
-
-const getListById = async (id, userId) => await dbClient.filmList.findUnique({
-    where: {
-        listId: id,
-        userId: userId
+        filmListId: id
     },
     include: {
-        film: true
+       film: true
     }
 })
+
+const getUsersLists = async (userId, id) => await dbClient.filmList.findFirst({
+    where: {
+        userId: userId,
+        id: id
+    }
+})
+
 
 module.exports = {
     create,
-    getListByTitle,
-    updateList,
-    addFilm,
-    getListById
+    addFilmToList,
+    getListById,
+    getUsersLists,
+    getUsersListById
 }
