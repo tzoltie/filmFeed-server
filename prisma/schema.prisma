@@ -41,7 +41,7 @@ model Profile {
 
 model Film {
   id            Int           @id @default(autoincrement())
-  title         String
+  title         String?
   reviews       Review[]
   notes         FilmNote[]
   lists         UsersFilmList[]
@@ -52,6 +52,7 @@ model Film {
 model Review {
   id            Int           @id @default(autoincrement())
   content       String
+  rating        Int
   userId        Int
   filmId        Int
   film          Film          @relation(fields: [filmId], references: [id])

@@ -18,7 +18,14 @@ function validateList(title) {
     }
 }
 
+function validateFilm(filmId) {
+    if(!filmId) {
+        throw Error(ERR.FILM_REQUIRED)
+    }
+}
+
 module.exports = {
     validateInput,
-    validateList
+    validateList,
+    validateFilm
 }

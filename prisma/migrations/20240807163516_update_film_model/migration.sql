@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Film" ALTER COLUMN "title" DROP NOT NULL;

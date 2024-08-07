@@ -9,5 +9,6 @@ module.exports = {
     LOGIN_REQUIRED: 'Must login as a user',
     INVALID_TOKEN: 'Token has not been accepted try logging in again',
     LIST_NOT_FOUND: 'A list was not found with that id',
-    USER_NOT_FOUND: 'A user was not found matching those credentials'
+    USER_NOT_FOUND: 'A user was not found matching those credentials',
+    FILM_REQUIRED: 'A film is required in order to add review/rating'
 }
