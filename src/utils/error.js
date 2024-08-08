@@ -13,5 +13,7 @@ module.exports = {
     FILM_REQUIRED: 'A film is required in order to add review/rating',
     REVIEW_NOT_FOUND: 'A review with that id does not exist',
     REQUEST_DENIED: 'This request has been denied, you do not have the correct credentials',
-    FILM_REVIEWS_NOT_FOUND: 'No reviews were found for that film'
+    FILM_REVIEWS_NOT_FOUND: 'No reviews were found for that film',
+    FILM_EXISTS_IN_LIST: 'This film is already in your list',
+    SOMETHING_WENT_WRONG: 'Could not complete action, something went wrong'
 }
