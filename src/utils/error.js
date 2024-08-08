@@ -10,5 +10,8 @@ module.exports = {
     INVALID_TOKEN: 'Token has not been accepted try logging in again',
     LIST_NOT_FOUND: 'A list was not found with that id',
     USER_NOT_FOUND: 'A user was not found matching those credentials',
-    FILM_REQUIRED: 'A film is required in order to add review/rating'
+    FILM_REQUIRED: 'A film is required in order to add review/rating',
+    REVIEW_NOT_FOUND: 'A review with that id does not exist',
+    REQUEST_DENIED: 'This request has been denied, you do not have the correct credentials',
+    FILM_REVIEWS_NOT_FOUND: 'No reviews were found for that film'
 }

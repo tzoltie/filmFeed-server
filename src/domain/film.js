@@ -6,6 +6,13 @@ const addFilm = async (filmId) => await dbClient.film.create({
     }
 })
 
+const getFilmById = async (filmId) => await dbClient.film.findUnique({
+    where: {
+        id: filmId
+    }
+})
+
 module.exports = {
-    addFilm
+    addFilm,
+    getFilmById
 }
