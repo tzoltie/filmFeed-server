@@ -59,6 +59,15 @@ const deleteListByIdFilmList = async (id) => await dbClient.filmList.delete({
     }
 })
 
+const deleteFilmInList = async (id, listId) => await dbClient.usersFilmList.delete({
+    where: {
+        filmListId_filmId: {
+            filmId: id,
+            filmListId: listId
+        }
+    }
+})
+
 module.exports = {
     create,
     addFilmToList,
@@ -67,5 +76,6 @@ module.exports = {
     getUsersListById,
     checkFilmExistsInList,
     deleteListByIdUserFilmList,
-    deleteListByIdFilmList
+    deleteListByIdFilmList,
+    deleteFilmInList
 }

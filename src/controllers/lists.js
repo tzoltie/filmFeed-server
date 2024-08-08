@@ -1,9 +1,7 @@
-const { create, getListById, addFilmToList, getUsersLists, getUsersListById, checkFilmExistsInList, deleteListByIdUserFilmList, deleteListByIdFilmList } = require("../domain/lists")
+const { create, getListById, addFilmToList, getUsersLists, getUsersListById, checkFilmExistsInList, deleteListByIdUserFilmList, deleteListByIdFilmList, deleteFilmInList } = require("../domain/lists")
 const { dataResponse } = require("../utils/responses")
 const { validateList } = require("../utils/validateUserInput")
 const ERR = require('../utils/error')
-const { error } = require("console")
-const dbClient = require("../utils/dbClient")
 
 const createList = async (req, res) => {
     const {
@@ -94,10 +92,31 @@ const deleteList = async (req, res) => {
     return dataResponse(res, 200, { list: deletedList })
 }
 
+const deleteFilmFromList = async (req, res) => {
+    const { filmId } = req.body
+    const listId = Number(req.params.id)
+    const userId = Number(req.user.id)
+
+    const found = await getListById(listId)
+    if(!found) {
+        return dataResponse(res, 404, { error: ERR.LIST_NOT_FOUND})
+    }
+    if(found.userId !== userId) {
+        return dataResponse(res, 403, { error: ERR.REQUEST_DENIED })
+    }
+    const foundFilmInList = await checkFilmExistsInList(Number(filmId), listId)
+    if(!foundFilmInList) {
+        return dataResponse(res, 404, { error: ERR.FILM_NOT_FOUND})
+    }
+    const deletedFilm = await deleteFilmInList(Number(filmId), listId)
+    return dataResponse(res, 200, { film: deletedFilm })
+}
+
 module.exports = {
     createList,
     addFilm,
     getList,
     updateList,
-    deleteList
+    deleteList,
+    deleteFilmFromList
 }

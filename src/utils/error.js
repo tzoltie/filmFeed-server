@@ -15,5 +15,6 @@ module.exports = {
     REQUEST_DENIED: 'This request has been denied, you do not have the correct credentials',
     FILM_REVIEWS_NOT_FOUND: 'No reviews were found for that film',
     FILM_EXISTS_IN_LIST: 'This film is already in your list',
-    SOMETHING_WENT_WRONG: 'Could not complete action, something went wrong'
+    SOMETHING_WENT_WRONG: 'Could not complete action, something went wrong',
+    FILM_NOT_FOUND: 'Film was not found'
 }
