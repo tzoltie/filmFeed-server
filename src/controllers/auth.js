@@ -15,8 +15,11 @@ const login = async (req, res) => {
         const foundUser = await getUserByEmail(email)
         const loginValid = validateUser(password, foundUser)
 
+        if(!foundUser) {
+            return dataResponse(res, 400, { error: ERR.EMAIL_NOT_FOUND })
+        }
         if(!loginValid) {
-            return dataResponse(res, 400, { error: ERR.INVALID_LOGIN })
+            return dataResponse(res, 400, { error: ERR.PASSWORD_INCORRECT })
         }
         const userId = foundUser.id
         const token = jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: JWT_EXPIRY })

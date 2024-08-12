@@ -1,8 +1,9 @@
 const dbClient = require("../utils/dbClient");
 
-const addFilm = async (filmId) => await dbClient.film.create({
+const addFilm = async (filmId, filmTitle) => await dbClient.film.create({
     data: {
-        id: filmId
+        id: filmId,
+        title: filmTitle
     }
 })
 

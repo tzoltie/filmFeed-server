@@ -28,6 +28,8 @@ model User {
   reviews       Review[]
   notes         FilmNote[]
   lists         FilmList[]
+  watchlist     Watchlist[]
+  diary         Diary[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
 }
@@ -39,12 +41,44 @@ model Profile {
   user          User          @relation(fields: [userId], references: [id])
 }
 
+model Diary {
+  id            Int           @id @default(autoincrement())
+  userId        Int
+  user          User          @relation(fields: [userId], references: [id])
+  films         UsersDiary[]
+}
+
+model UsersDiary {
+  diaryId       Int
+  filmId        Int
+  film          Film          @relation(fields: [filmId], references: [id])
+  diary         Diary         @relation(fields: [diaryId], references: [id])
+  @@id([diaryId, filmId])
+}
+
+model Watchlist {
+  id            Int           @id @default(autoincrement())
+  userId        Int
+  user          User          @relation(fields: [userId], references: [id])
+  films         UsersWatchlist[]
+}
+
+model UsersWatchlist {
+  watchlistId   Int
+  filmId        Int
+  film          Film          @relation(fields: [filmId], references: [id])
+  watchlist     Watchlist     @relation(fields: [watchlistId], references: [id])
+  @@id([filmId, watchlistId])
+}
+
 model Film {
   id            Int           @id @default(autoincrement())
   title         String?
   reviews       Review[]
   notes         FilmNote[]
   lists         UsersFilmList[]
+  watchlists    UsersWatchlist[]
+  diaries       UsersDiary[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
 }
