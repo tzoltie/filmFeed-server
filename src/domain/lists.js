@@ -78,6 +78,19 @@ const deleteFilmInList = async (id, listId) => await dbClient.usersFilmList.dele
 const getAllUsersLists = async (userId) => await dbClient.filmList.findMany({
     where: {
         userId: userId
+    },
+    include: {
+        films: {
+            include: {
+                film: {
+                    select: {
+                        id: true,
+                        title: true,
+                        poster: true
+                    }
+                }
+            }
+        }
     }
 })
 
