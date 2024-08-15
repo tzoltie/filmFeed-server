@@ -20,12 +20,18 @@ const createUser = async (email, password, username, firstName) => await dbClien
 const getUserByUsername = async (username) => await dbClient.user.findUnique({
     where: {
         username: username
+    },
+    include: {
+        profile: true
     }
 })
 
 const getUserByEmail = async (email) => await dbClient.user.findUnique({
     where: {
         email: email
+    },
+    include: {
+        profile: true
     }
 })
 

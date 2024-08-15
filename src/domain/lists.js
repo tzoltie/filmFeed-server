@@ -24,6 +24,13 @@ const getListById = async (id) => await dbClient.filmList.findFirst({
     }
 })
 
+const getUsersListByTitle = async (title, userId) => await dbClient.filmList.findFirst({
+    where: {
+        title: title,
+        userId: userId
+    }
+})
+
 const getUsersListById = async (id) => await dbClient.usersFilmList.findFirst({
     where: {
         filmListId: id
@@ -68,6 +75,20 @@ const deleteFilmInList = async (id, listId) => await dbClient.usersFilmList.dele
     }
 })
 
+const getAllUsersLists = async (userId) => await dbClient.filmList.findMany({
+    where: {
+        userId: userId
+    }
+})
+
+const addManyFilmsToList = async (filmListId, films) => await dbClient.usersFilmList.createMany({
+    data: films.map(film => ({
+        filmId: film.id,
+        filmListId: filmListId
+    })),
+    skipDuplicates: true
+})
+
 module.exports = {
     create,
     addFilmToList,
@@ -77,5 +98,8 @@ module.exports = {
     checkFilmExistsInList,
     deleteListByIdUserFilmList,
     deleteListByIdFilmList,
-    deleteFilmInList
+    deleteFilmInList,
+    getAllUsersLists,
+    getUsersListByTitle,
+    addManyFilmsToList
 }

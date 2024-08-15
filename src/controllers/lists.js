@@ -1,7 +1,9 @@
-const { create, getListById, addFilmToList, getUsersLists, getUsersListById, checkFilmExistsInList, deleteListByIdUserFilmList, deleteListByIdFilmList, deleteFilmInList } = require("../domain/lists")
+const { create, getListById, addFilmToList, getUsersLists, getUsersListById, checkFilmExistsInList, deleteListByIdUserFilmList, deleteListByIdFilmList, deleteFilmInList, getAllUsersLists, getUsersListByTitle, addManyFilmsToList } = require("../domain/lists")
 const { dataResponse } = require("../utils/responses")
 const { validateList } = require("../utils/validateUserInput")
 const ERR = require('../utils/error')
+const { getFilmById, addManyFilms } = require("../domain/film")
+const { film } = require("../utils/dbClient")
 
 const createList = async (req, res) => {
     const {
@@ -24,7 +26,6 @@ const addFilm = async (req, res) => {
     } = req.body
     const listId = Number(req.params.id)
     const userId = Number(req.user.id)
-
     const found = await getListById(listId)
 
     if(!found) {
@@ -112,11 +113,48 @@ const deleteFilmFromList = async (req, res) => {
     return dataResponse(res, 200, { film: deletedFilm })
 }
 
+const getAllLists = async (req, res) => {
+    const userId = Number(req.user.id)
+    const requestId = Number(req.params.userId)
+
+    if(userId !== requestId) {
+        return dataResponse(res, 403, { error: ERR.REQUEST_DENIED})
+    }
+
+    const found = await getAllUsersLists(userId)
+    if(!found) {
+        return dataResponse(res, 404, { error: ERR.LIST_NOT_FOUND })
+    }
+    return dataResponse(res, 200, { lists: found })
+}
+
+const addMultiFilmsToList = async (req, res) => {
+    const userId = Number(req.user.id)
+    const { title, films } = req.body
+    try {
+        validateList(title)
+        const addFilmsToDb = await addManyFilms(films)
+        const foundList = await getUsersListByTitle(title, userId)
+        if(!foundList) {
+            const createdList = await create(title, userId)
+            const addedFilms = await addManyFilmsToList(createdList.id, films)
+            return dataResponse(res, 201, { list: addedFilms })
+        }
+        const addedFilms = await addManyFilmsToList(foundList.id, films)
+        return dataResponse(res, 201, { list: addedFilms })
+    } catch (e) {
+        console.log(e)
+        return dataResponse(res, 400, { error: e.message })
+    }
+}
+
 module.exports = {
     createList,
     addFilm,
     getList,
     updateList,
     deleteList,
-    deleteFilmFromList
+    deleteFilmFromList,
+    getAllLists,
+    addMultiFilmsToList
 }

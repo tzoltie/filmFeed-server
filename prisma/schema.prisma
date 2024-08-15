@@ -74,6 +74,7 @@ model UsersWatchlist {
 model Film {
   id            Int           @id @default(autoincrement())
   title         String?
+  poster        String?
   reviews       Review[]
   notes         FilmNote[]
   lists         UsersFilmList[]
