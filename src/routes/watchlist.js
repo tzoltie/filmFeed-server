@@ -4,6 +4,6 @@ const authentication = require('../middleware/authentication')
 const router = express.Router()
 
 router.get('/:id', authentication, getWatchlist)
-router.post('/:id', authentication, addFilmToWatchlistById)
+router.post('/:id/add', authentication, addFilmToWatchlistById)
 
 module.exports = router
