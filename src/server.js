@@ -7,6 +7,7 @@ const listRouter = require('./routes/lists.js')
 const reviewRouter = require('./routes/review.js')
 const diaryRouter = require('./routes/diary.js')
 const watchlistRouter = require('./routes/watchlist.js')
+const favouriteFilmsRouter = require('./routes/favouriteFilms.js')
 
 app.use(express.json())
 app.use(cors())
@@ -17,6 +18,8 @@ app.use('/lists', listRouter)
 app.use('/reviews', reviewRouter)
 app.use('/diary', diaryRouter)
 app.use('/watchlist', watchlistRouter)
+app.use('/favourites', favouriteFilmsRouter)
+
 
 
 module.exports = app

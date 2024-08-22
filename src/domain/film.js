@@ -40,9 +40,19 @@ const addManyFilms = async (films) => await dbClient.film.createMany({
     skipDuplicates: true
 })
 
+const findManyFilms = async (filmIds) => await dbClient.film.findMany({
+    where: {
+        id: {in: filmIds}
+    },
+    select: {
+        id: true
+    }
+})
+
 module.exports = {
     addFilm,
     getFilmById,
     getFilmsInWatchlistByUserId,
-    addManyFilms
+    addManyFilms,
+    findManyFilms
 }

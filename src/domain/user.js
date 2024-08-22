@@ -35,8 +35,52 @@ const getUserByEmail = async (email) => await dbClient.user.findUnique({
     }
 })
 
+const getUserById = async (id) => await dbClient.user.findUnique({
+    where: {
+        id: id
+    },
+    include: {
+        profile: true,
+        reviews: {
+            include: {
+                film: {
+                    select: {
+                        poster: true
+                    }
+                }
+            }
+        },
+        watchlist: true,
+        diary: true,
+        lists: true
+    }
+})
+
+const updateUserInfo = async (userId, profileUrl, username) => await dbClient.user.update({
+    where: {
+        id: userId
+    },
+    data: {
+        username: username,
+        profile: {
+            connect: {
+                user: {
+                    profile: {
+                        profilePic: profileUrl
+                    }
+                }
+            }
+        }
+    },
+    include: {
+        profile: true
+    }
+})
+
 module.exports = {
     createUser,
     getUserByUsername,
-    getUserByEmail
+    getUserByEmail,
+    getUserById,
+    updateUserInfo
 }

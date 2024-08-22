@@ -1,13 +1,19 @@
 const { addFilm, getFilmById } = require("../domain/film")
-const { create, getReviewById, updateReviewById, getAllFilmReviews } = require("../domain/review")
+const { create, getReviewById, updateReviewById, getAllFilmReviews, getReviewsByUserId, getAllReviews } = require("../domain/review")
 const { dataResponse } = require("../utils/responses")
 const ERR = require('../utils/error')
 
 const createReview = async (req, res) => {
     const {
         content,
-        rating
+        rating,
+        film
     } = req.body
+
+    const { 
+        poster,
+        title 
+    } = film
 
     const userId = Number(req.user.id)
     const filmId = Number(req.params.id)
@@ -16,17 +22,13 @@ const createReview = async (req, res) => {
         const findFilm = await getFilmById(filmId)
         
         if(!findFilm) {
-        await addFilm(filmId)
+        await addFilm(filmId, title, poster)
         }
         const createdReview = await create(content, Number(rating), filmId, userId)
         return dataResponse(res, 201, { review: createdReview })
     } catch (e) {
-        console.log(e)
         return dataResponse(res, 400, { error: e.message })
     }
-    // in order to add a review the db will require a filmId in order to attch the review too.
-    // the film id will need to be stored first before the review can be added.
-    
 }
 
 const updateReview = async (req, res) => {
@@ -68,8 +70,36 @@ const getAllFilmReviewByFilmId = async (req, res) => {
     
 }
 
+const getAllReviewsByUserId = async (req, res) => {
+    const userId = Number(req.user.id)
+    try {
+        const found = await getReviewsByUserId(userId)
+        if(!found) {
+            return dataResponse(res, 404, { error: ERR.USER_REVIEWS_NOT_FOUND})
+        }
+        return dataResponse(res, 200, { reviews: found })
+    } catch(e) {
+        return dataResponse(res, 500, { error: e.message })
+    }
+    
+}
+
+const getReviews = async (req, res) => {
+    try {
+        const found = await getAllReviews()
+        if(!found) {
+            return dataResponse(res, 404, { error: ERR.REVIEWS_NOT_FOUND})
+        }
+        return dataResponse(res, 200, { reviews: found})
+    } catch(e) {
+        return dataResponse(res, 500, { error: e.message })
+    }
+}
+
 module.exports = {
     createReview,
     updateReview,
-    getAllFilmReviewByFilmId
+    getAllFilmReviewByFilmId,
+    getAllReviewsByUserId,
+    getReviews
 }

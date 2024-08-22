@@ -40,10 +40,21 @@ const getUsersListById = async (id) => await dbClient.usersFilmList.findFirst({
     }
 })
 
-const getUsersLists = async (userId, id) => await dbClient.filmList.findFirst({
+const getUsersLists = async (id, userId) => await dbClient.filmList.findFirst({
     where: {
         userId: userId,
         id: id
+    }, 
+    include: {
+        films: {
+            include: {
+                film: {
+                    include: {
+                        reviews: true
+                    }
+                }
+            }
+        }
     }
 })
 

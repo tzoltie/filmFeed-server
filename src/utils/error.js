@@ -18,5 +18,9 @@ module.exports = {
     SOMETHING_WENT_WRONG: 'Could not complete action, something went wrong',
     FILM_NOT_FOUND: 'Film was not found',
     PASSWORD_INCORRECT: 'Password provided incorrect',
-    EMAIL_NOT_FOUND: 'Email provided does not match any user'
+    EMAIL_NOT_FOUND: 'Email provided does not match any user',
+    DIARY_NOT_FOUND: 'Diary not found for this user',
+    USER_REVIEWS_NOT_FOUND: 'User has no reviews',
+    REVIEWS_NOT_FOUND: 'Reviews could not be retrieved',
+    FAVOURITE_FILMS_NOT_FOUND: 'Could not find users favourites'
 }

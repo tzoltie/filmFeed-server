@@ -46,13 +46,14 @@ const getList = async (req, res) => {
     if(!foundUsersList) {
         return dataResponse(res, 404, { error: ERR.LIST_NOT_FOUND })
     }
+    
     const found = await getUsersListById(id)
 
     if(!found) {
         return dataResponse(res, 404, { error: ERR.LIST_NOT_FOUND })
     }
 
-    return dataResponse(res, 200, { list: found })
+    return dataResponse(res, 200, { list: foundUsersList })
 }
 
 const updateList = async (req, res) => {

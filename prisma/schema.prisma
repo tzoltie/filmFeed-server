@@ -30,6 +30,7 @@ model User {
   lists         FilmList[]
   watchlist     Watchlist[]
   diary         Diary[]
+  favourites    UsersFavouriteFilms[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
 }
@@ -39,6 +40,7 @@ model Profile {
   name          String
   userId        Int           @unique
   user          User          @relation(fields: [userId], references: [id])
+  profilePic    String?
 }
 
 model Diary {
@@ -71,6 +73,14 @@ model UsersWatchlist {
   @@id([filmId, watchlistId])
 }
 
+model UsersFavouriteFilms {
+  filmId        Int
+  film          Film          @relation(fields: [filmId], references: [id])
+  userId        Int
+  user          User          @relation(fields: [userId], references: [id])
+  @@id([filmId, userId])
+}
+
 model Film {
   id            Int           @id @default(autoincrement())
   title         String?
@@ -80,6 +90,7 @@ model Film {
   lists         UsersFilmList[]
   watchlists    UsersWatchlist[]
   diaries       UsersDiary[]
+  userFavourites UsersFavouriteFilms[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now())
 }

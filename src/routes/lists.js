@@ -5,9 +5,9 @@ const router = express.Router()
 
 
 router.post('/', authentication, createList)
-router.get('/:userId', authentication, getAllLists)
+router.get('/all/:userId', authentication, getAllLists)
 router.post('/film/:id', authentication, addFilm)
-router.get('/:id', authentication, getList)
+router.get('/list/:id/', authentication, getList)
 router.patch('/:id', authentication, updateList)
 router.delete('/:id', authentication, deleteList)
 router.delete('/film/:id', authentication, deleteFilmFromList)

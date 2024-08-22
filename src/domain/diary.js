@@ -11,7 +11,7 @@ const addToDiary = async (userId, filmId) => await dbClient.diary.create({
     }
 })
 
-const getDiary = async (userId) => await dbClient.diary.findUnique({
+const getDiary = async (userId) => await dbClient.diary.findFirst({
     where: {
         userId: userId
     },

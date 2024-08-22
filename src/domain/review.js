@@ -31,9 +31,26 @@ const updateReviewById = async (id, content, rating) => await dbClient.review.up
     }
 })
 
+const getReviewsByUserId = async (userId) => await dbClient.review.findMany({
+    where: {
+        userId: userId
+    },
+    include: {
+        film: true
+    }
+})
+
+const getAllReviews = async () => await dbClient.review.findMany({
+    include: {
+        film: true
+    }
+})
+
 module.exports = {
     create,
     getReviewById,
     getAllFilmReviews,
-    updateReviewById
+    updateReviewById,
+    getReviewsByUserId,
+    getAllReviews
 }
