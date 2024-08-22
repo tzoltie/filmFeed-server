@@ -7,7 +7,7 @@ const addFavouriteFilms = async (userId, films) => await dbClient.usersFavourite
     }))
 })
 
-const getFavouriteFilms = async (userId) => dbClient.usersFavouriteFilms.findFirst({
+const getFavouriteFilms = async (userId) => dbClient.usersFavouriteFilms.findMany({
     where: {
         userId: userId
     },

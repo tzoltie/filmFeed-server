@@ -1,4 +1,4 @@
-const { createUser, getUserById } = require('../domain/user')
+const { createUser, getUserById, addProfilePicDb } = require('../domain/user')
 const { JWT_SECRET, JWT_EXPIRY } = require('../utils/config')
 const { dataResponse } = require('../utils/responses')
 const { validateInput } = require('../utils/validateUserInput')
@@ -32,6 +32,7 @@ const getUser = async (req, res) => {
         if(!found) {
             return dataResponse(res, 404, { error: ERR.USER_NOT_FOUND })
         }
+        delete found.passwordHash
         return dataResponse(res, 200, { user: found })
     } catch(e) {
         return dataResponse(res, 500, { error: ERR.SOMETHING_WENT_WRONG })
@@ -40,7 +41,7 @@ const getUser = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
     const userId = Number(req.user.id)
-    const requestUserId = Numebr(req.params.id)
+    const requestUserId = Number(req.params.id)
     const {
         profileUrl,
         username
@@ -61,7 +62,28 @@ const updateUserProfile = async (req, res) => {
     }
 }
 
+const addProfilePic = async (req, res) => {
+    const userId = Number(req.user.id)
+    const requestUserId = Number(req.params.id)
+    const { profileUrl } = req.body
+    try {
+        if(userId !== requestUserId) {
+            return dataResponse(res, 403, { error: ERR.REQUEST_DENIED })
+        }
+        const found = await getUserById(userId)
+        if(!found) {
+            return dataResponse(res, 404, { error: ERR.USER_NOT_FOUND })
+        }
+        const updatedUser = await addProfilePicDb(userId, profileUrl)
+        return dataResponse(res, 200, {user: updatedUser})
+    } catch(e) {
+        console.log(e)
+        return dataResponse(res, 500, { error: e.message })
+    }
+}
+
 module.exports = {
     create,
-    getUser
+    getUser,
+    addProfilePic
 }

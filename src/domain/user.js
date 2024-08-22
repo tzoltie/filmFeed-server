@@ -77,10 +77,24 @@ const updateUserInfo = async (userId, profileUrl, username) => await dbClient.us
     }
 })
 
+const addProfilePicDb = async (userId, profileUrl) => await dbClient.profile.upsert({
+    where: {
+        userId: userId
+    },
+    update: {
+        profilePic: profileUrl
+    },
+    create: {
+        userId: userId,
+        profilePic: profileUrl
+    }
+})
+
 module.exports = {
     createUser,
     getUserByUsername,
     getUserByEmail,
     getUserById,
-    updateUserInfo
+    updateUserInfo,
+    addProfilePicDb
 }
