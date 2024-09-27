@@ -18,6 +18,13 @@ const getReviewById = async (id) => await dbClient.review.findUnique({
 const getAllFilmReviews = async (filmId) => await dbClient.review.findMany({
     where: {
         filmId: filmId
+    },
+    include: {
+        user: {
+            include: {
+                profile: true
+            }
+        }
     }
 })
 

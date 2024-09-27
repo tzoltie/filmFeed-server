@@ -1,8 +1,9 @@
 const { dataResponse } = require("../utils/responses")
 const ERR = require("../utils/error")
-const { getWatchlistByUserId, createWatchlist } = require("../domain/watchlist")
+const { getWatchlistByUserId, createWatchlist, addFilmToWatchlist } = require("../domain/watchlist")
 const { getFilmById, getFilmsInWatchlistByUserId } = require("../domain/film")
 const { addFilm } = require("../domain/film")
+const { watchlist } = require("../utils/dbClient")
 
 const getWatchlist = async (req, res) => {
     const userId = Number(req.user.id)
@@ -27,15 +28,19 @@ const addFilmToWatchlistById = async (req, res) => {
         return dataResponse(res, 403, { error: ERR.REQUEST_DENIED})
     }
 
+    const watchlistFound = await getWatchlistByUserId(userId)
     const filmFoundInDb = await getFilmById(Number(filmId))
+
     if(!filmFoundInDb) {
-        const newFilm = await addFilm(Number(filmId), title, poster)
-        const usersWatchlist = await createWatchlist(userWatchlist, Number(newFilm.id))
+        await addFilm(Number(filmId), title, poster)
     }
-    
-    const filmsInWatchlist = await getFilmsInWatchlistByUserId(userId)
-    console.log(filmsInWatchlist)
-    return dataResponse(res, 201, { watchlist: filmsInWatchlist })
+
+    if(!watchlistFound) {
+       const newWatchList = await createWatchlist(userWatchlist, Number(filmId))
+       return dataResponse(res, 201, { watchlist: newWatchList})
+    }
+    const addedFilm = await addFilmToWatchlist(watchlistFound.id, filmId)
+    return dataResponse(res, 201, { watchlist: addedFilm })
 }
 
 module.exports = {

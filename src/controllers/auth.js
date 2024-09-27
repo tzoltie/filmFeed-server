@@ -13,7 +13,7 @@ const login = async (req, res) => {
 
     try {
         const foundUser = await getUserByEmail(email)
-        const loginValid = validateUser(password, foundUser)
+        const loginValid = await validateUser(password, foundUser)
 
         if(!foundUser) {
             return dataResponse(res, 400, { error: ERR.EMAIL_NOT_FOUND })

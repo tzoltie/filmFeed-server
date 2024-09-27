@@ -63,6 +63,7 @@ const getAllFilmReviewByFilmId = async (req, res) => {
         if(!found) {
             return dataResponse(res, 404, { error: ERR.FILM_REVIEWS_NOT_FOUND})
     }
+    delete found.passwordHash
     return dataResponse(res, 200, { reviews: found })
     } catch(e) {
         dataResponse(res, 500, { error: e.message })

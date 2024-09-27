@@ -22,5 +22,7 @@ module.exports = {
     DIARY_NOT_FOUND: 'Diary not found for this user',
     USER_REVIEWS_NOT_FOUND: 'User has no reviews',
     REVIEWS_NOT_FOUND: 'Reviews could not be retrieved',
-    FAVOURITE_FILMS_NOT_FOUND: 'Could not find users favourites'
+    FAVOURITE_FILMS_NOT_FOUND: 'Could not find users favourites',
+    USERNAME_ALREADY_EXISTS: 'A user already exists with that username',
+    EMAIL_IN_USE: 'A user with that email already exists'
 }

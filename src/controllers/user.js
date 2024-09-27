@@ -1,4 +1,4 @@
-const { createUser, getUserById, addProfilePicDb } = require('../domain/user')
+const { createUser, getUserById, addProfilePicDb, getUserByUsername, getUserByEmail } = require('../domain/user')
 const { JWT_SECRET, JWT_EXPIRY } = require('../utils/config')
 const { dataResponse } = require('../utils/responses')
 const { validateInput } = require('../utils/validateUserInput')
@@ -14,14 +14,21 @@ const create = async (req, res) => {
     } = req.body
     try {
         validateInput(email, password, username, firstName)
+        const checkUsername = await getUserByUsername(username)
+        const checkEmail = await getUserByEmail(email)
+        if(checkEmail) {
+            return await dataResponse(res, 400, {error: ERR.EMAIL_IN_USE})
+        }
+        if(checkUsername) {
+            return dataResponse(res, 400, {error: ERR.USERNAME_ALREADY_EXISTS})
+        }
+        const createdUser = await createUser(email, password, username, firstName)
+        delete createdUser.passwordHash
+        const token = jwt.sign({ sub: createdUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
+        return dataResponse(res, 201, { token: token, user: createdUser })
     } catch(e) {
         return dataResponse(res, 400, { error: e.message})
     }
-    const createdUser = await createUser(email, password, username, firstName)
-    delete createdUser.passwordHash
-    const token = jwt.sign({ sub: createdUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
-
-    return dataResponse(res, 201, { token: token, user: createdUser })
 }
 
 const getUser = async (req, res) => {
